@@ -25,7 +25,7 @@ export default function Profile() {
 
   const [imageUrl,] = useState(`http://localhost:5500/uploads`);
   const email = localStorage.getItem("userEmail");
-
+console.log("current",currentUser);
   // let detail
 console.log("email", email);
   const handleFileChange = (event) => {
@@ -63,11 +63,11 @@ console.log("email", email);
       const response = await axios.post("http://localhost:5500/api/marraige/image/profile/get",
       {
         userEmail: email,
-        imageId : image._id,
+        // imageId : image._id,
       });
 
 
-      setImgData(response.data.imgdata)
+      setImgData(response.data.imageItem)
       
     } catch (error) {
       console.error("error fetching image:", error);
@@ -76,11 +76,11 @@ console.log("email", email);
   console.log("imgdata",imgData);
 
   console.log("image", image);
-  const imageData = image.map((imageItem) => imageItem.imageId);
-  const images = image.filter((imgData) =>
-    imageData.includes(setImgData._id)
-  );
-  console.log("image", images);
+  // const imageData = image.map((imageItem) => imageItem.imageId);
+  // const images = image.filter((imgData) =>
+  //   imageData.includes(setImgData._id)
+  // );
+  // console.log("image", images);
 
   // const confirmDelete = (product) => {
   //   if (window.confirm(`Are you sure to remove ${product.prod_name}?`)) {
@@ -173,7 +173,7 @@ console.log("email", email);
 
                 <Card.Text style={{ position: "absolute", zIndex: 2, marginLeft: "12%", fontSize: "35px", marginTop: "10%", borderColor: 'black' }} />
                 <Card.Img style={{ filter: 'brightness(0.8)', height: "25rem" }} variant="top"
-                  src={`${imageUrl}/${img}`} alt={img} />
+                  src={`${imageUrl}/${img.imageName}`} alt={img} />
 
                 <div className="dele" style={{ width: "100%", display: "flex", justifyContent: "space-around", alignItems: "center" }}>
 
@@ -185,7 +185,7 @@ console.log("email", email);
                   </NavDropdown>
                 </div>
                 <div>
-                  {activeCard === index && <CommentForm postComment={img} />}
+                  {activeCard === index && <CommentForm imageId={img._id} />}
 
                 </div>
                 <div>

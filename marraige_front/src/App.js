@@ -6,7 +6,6 @@ import { useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 import Rhome from './Relatives/Rhome';
-import FileUploadForm from './Relatives/fileUploadForm';
 import Rnavbar from './Relatives/Rnavbar';
 import Rsignup from './Relatives/Rsignup';
 import Rlogin from './Relatives/Rlogin';
@@ -40,7 +39,7 @@ function App() {
   const [data, setData] = useState([]);
   const [loguser,setLoguser]=useState(null)
   const [ imge, setimge ] = useState();
-const [user,currentUser]=useState();
+const [user,currentUser]=useState([]);
   
   const values = {
     message, setMessage, 
@@ -65,7 +64,7 @@ const [user,currentUser]=useState();
           <Routes>
 
             <Route path="/Rhome" element={<Rhome />} />
-            <Route path='/FileUploadForm' element={<FileUploadForm />} />
+            {/* <Route path='/FileUploadForm' element={<FileUploadForm />} /> */}
             <Route path='/Rsignup' element={<Rsignup/>}/>
             <Route path='/CommentForm' element={<CommentForm/>}/>
             <Route path='/' element={<Rlogin/>}/>

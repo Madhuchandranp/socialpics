@@ -16,7 +16,7 @@ import CommentForm from './CommentForm';
 
 
 export default function Rhome() {
-  const { image, currentUser } = useContext(mycontext);
+  // const { image, currentUser } = useContext(mycontext);
   const [selectedFile, setSelectedFile] = useState(null);
   const [imgData, setImgData,imageItem] = useState([]);
   const [comments, setComments] = useState([]);
@@ -62,9 +62,9 @@ export default function Rhome() {
       const response = await axios.post("http://localhost:5500/api/marraige/image/get",
       {
         userEmail: email,
-        imageId : image._id,
+        // imageId : image._id,
       });
-      setImgData(response.data.images)
+      setImgData(response.data.imageItem)
     } catch (error) {
       console.error("error fetching image:", error);
     }
@@ -73,18 +73,7 @@ export default function Rhome() {
 
 
 
-  console.log("image", image);
-  const imageData = image.map((imageItem) => imageItem.imageId);
-  const images = image.filter((imgData) =>
-    imageData.includes(setImgData._id)
-  );
-  console.log("image", images);
-
-  // const confirmDelete = (product) => {
-  //   if (window.confirm(`Are you sure to remove ${product.prod_name}?`)) {
-  //     handleDelete(product._id);
-  //   }
-  // };
+ 
 
   const fetchComments = async () => {
     try {

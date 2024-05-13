@@ -58,23 +58,31 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import SendIcon from '@mui/icons-material/Send';
 import Button from '@mui/material/Button';
+// import { postcomment } from '../marraige_back/controller/commentcontrol';
 
-function CommentForm({postComment,currentUser}) {
+function CommentForm({imageId}) {
   
-  const imageId=postComment
-  console.log("imgid",imageId);
+  // const imageId=postcomment;
+  // console.log("imgid",postcomment);
   const [text, setText] = useState('');
   const [comments, setComments] = useState([]);
-  console.log("Comments",comments);
+  console.log("Comments",comments,imageId);
+
+  const userId=localStorage.getItem("userId")
+  console.log("comuser",userId);
 
   useEffect(() => {
     const fetchComments = async () => {
       try {
-        if (imageId) {
-        const response = await axios.get(`http://localhost:5500/api/marraige/getcomment/${imageId}`);
-        setComments(response.data);
-        
-        }
+        if (postcomment) {
+        const response = await axios.get(`http://localhost:5500/api/marraige/getcomment/${postcomment}`);
+        const updatedComments = response.data.map(comment => ({
+          ...comment,
+          user: currentUser
+        }));
+        setComments(updatedComments);
+      }
+
       } catch (error) {
 
         console.error('Error fetching comments:', error);
@@ -82,13 +90,22 @@ function CommentForm({postComment,currentUser}) {
     };
 
     fetchComments();
-  }, [imageId]);
+  }, [postcomment,currentUser]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post('http://localhost:5500/api/marraige/postcomment', { imageId, text , user: currentUser});
+      const data = {
+        imageId,
+        text,
+        userId,
+        // imageName: imageName 
+      };
+    
+      const res = await axios.post('http://localhost:5500/api/marraige/comment/postcomment', {data});
       setText('');
+      console.log(res.data);
+
       // Refresh comments after posting
       // fetchComments();
     } catch (error) {
