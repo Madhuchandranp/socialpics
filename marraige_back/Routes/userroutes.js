@@ -35,7 +35,7 @@ router.post("/user/sendmail",emailController.postEmail)
 
 
 
-router.post("/postcomment",commentcontroller.postcomment);
+router.post("/comment/postcomment",commentcontroller.postcomment);
 router.get("/getcomment",commentcontroller.getcomment);
 router.post("/postreply",commentcontroller.postReply);
 router.get("/deletecomment/:id",commentcontroller.deleteComment);

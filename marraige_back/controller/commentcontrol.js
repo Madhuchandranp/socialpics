@@ -4,21 +4,55 @@ const User = require('../module/userschema');
 
  const Comment = require("../module/commentschema");
 
- const postcomment = async (req, res) => {
+ const Image=require('../module/imageschema')
+
+//  const postcomment = async (req, res) => {
+//   try {
+//     const { imageId,text } = req.body;
+//     const user= req.user;
+//     console.log("User",user);
+//     console.log(req.body);
+
+//     // const validImageId = Types.ObjectId(imageId);
+
+//     const newComment= new Comment({ imageId, text, email: user._id});
+//     await newComment.save();
+//     res.status(201).json(newComment);
+//   } catch (error) {
+//     console.error('Error adding comment:', error);
+//     res.status(500).json({ error: 'Server error' });
+//   }
+// };
+const postcomment = async (req, res) => {
   try {
-    const { imageId,text } = req.body;
-    const user= req.user;
-    console.log("User",user);
-    console.log(req.body);
+    const { imageId, text,userId } = req.body.data;
+    
+  console.log(req.body);
+  console.log("imageId:", imageId); 
+  console.log("text:", text); 
+  console.log("userId:", userId); 
 
-    // const validImageId = Types.ObjectId(imageId);
+  
+    const user = await User.findById(userId);
+    console.log(user);
+    if (!user) {
+      return res.status(408).json({ error: 'User not found' });
+    }
 
-    const newComment= new Comment({ imageId, text, email: user._id});
-    await newComment.save();
-    res.status(201).json(newComment);
+    const image = user.images.find(img => img._id.toString() === imageId);
+    
+    if (!image) {
+      return res.status(409).json({ error: 'Image not found' });
+    }
+
+ 
+    image.comments.push({ commentText: text, userEmail: user.email });
+    await user.save();
+    // const comment = await User.imageId.comments.push({  text, user });
+    res.status(201).json(image.comments);
   } catch (error) {
     console.error('Error adding comment:', error);
-    res.status(500).json({ error: 'Server error' });
+    res.status(500).json({ error: 'Failed to add comment' });
   }
 };
 
@@ -49,15 +83,39 @@ const postReply = async (req, res) => {
 };
 
 
-const getcomment= async (req, res) => {
+// const getcomment= async (req, res) => {
+//   try {
+//     const { imageId } = req.params;
+//     const comments = await Comment.find({imageId});
+//     res.status(200).json(comments);
+//   } catch (error) {
+//     console.error('Error fetching comments:', error);
+//     res.status(500).json({ error: 'Server error' });
+//   }
+// };
+
+const getcomment = async (req, res) => {
   try {
-    const comments = await Comment.find();
+    const { imageName } = req.params;
+    
+    // Find the image using the imageName
+    const image = await Image.findOne({ imageName });
+
+    if (!image) {
+      return res.status(404).json({ error: 'Image not found' });
+    }
+
+    const imageId = image._id;
+
+    const comments = await Comment.find({ imageId });
+
     res.status(200).json(comments);
   } catch (error) {
     console.error('Error fetching comments:', error);
     res.status(500).json({ error: 'Server error' });
   }
 };
+
 
 
 

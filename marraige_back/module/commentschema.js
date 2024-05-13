@@ -1,10 +1,7 @@
 const mongoose=require('mongoose')
-
+const Schema = mongoose.Schema;
 const commentSchema = new mongoose.Schema({
-  imageId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Image'
-},
+ 
 text: String,
 replies: [
     {
@@ -13,10 +10,17 @@ replies: [
 ],
 date: { type: Date, default: Date.now },
 
-email: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User'
-}
+user: {
+    type: Schema.Types.ObjectId,
+    ref: 'User',
+    required: true
+  },
+  image: {
+    type: Schema.Types.ObjectId,
+    ref: 'Image',
+    required: true
+  },
+
 });
   
   const Comment = mongoose.model('Comment', commentSchema);

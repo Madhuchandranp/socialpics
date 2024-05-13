@@ -15,11 +15,11 @@ const userSchema = new mongoose.Schema({
     },
     images: [
         {
-            imageName: String,
+            imageName: {type:String},
             comments: [
                 {
-                    commentText: String,
-                    userEmail: String
+                    commentText:{type: String},
+                    userEmail: {type: String}
                 }
             ]
         }
